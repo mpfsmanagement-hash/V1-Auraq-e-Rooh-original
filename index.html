@@ -5,12 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>اوراقِ روح | Auraq-e-Rooh</title>
 
-  <link rel="preconnect" href="https://googleapis.com">
-  <link rel="preconnect" href="https://gstatic.com" crossorigin>
-  <link href="https://googleapis.com/css2?family=Cinzel:wght@600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-  <script src="https://cloudflare.com"></script>
-  <script src="https://jsdelivr.net"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
 
   <style>
     :root {
@@ -428,3 +428,311 @@
 </head>
 <body>
 
+  <div id="loader-screen">
+    <div class="loader-wrapper">
+      <svg class="progress-ring">
+        <circle class="bg-ring"></circle>
+        <circle class="fg-ring"></circle>
+      </svg>
+      <div class="sufi-circle">
+        <img id="loader-sufi-img" src="https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=600&q=80" alt="Sufi Raqs">
+      </div>
+      <div class="circle-overlay-text urdu">اوراقِ روح</div>
+    </div>
+  </div>
+
+  <div id="splash-screen">
+    <div class="splash-bg" id="splash-sufi-bg" style="background-image: url('https://images.unsplash.com/photo-1542816417-0983c9c9ad53?auto=format&fit=crop&w=1200&q=80');"></div>
+    <div class="splash-content">
+      <div class="splash-title-ur urdu">اوراقِ روح</div>
+      <div class="splash-title-en">AURAQ E ROOH</div>
+      <div class="splash-subtitle urdu">کامیاب سفر کا آغاز</div>
+      <div class="splash-meta" dir="ltr">
+        <div><strong>Author:</strong> Mian Muzammil Ahmad</div>
+        <div><strong>Publisher:</strong> MMA Pixel Forge Studio (MPFS)</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="app-container">
+    <header>
+      <div class="brand-title">
+        <h1 class="urdu">اوراقِ روح</h1>
+        <span>| AURAQ E ROOH</span>
+      </div>
+
+      <div class="nav-tabs">
+        <button class="btn urdu" onclick="goToCover()">سرورق (Cover)</button>
+        <button class="btn urdu" onclick="openModal('index-modal')">فہرستِ مضامین</button>
+        <button class="btn urdu" onclick="openModal('about-modal')">تعارفِ کتاب</button>
+        <a class="btn" href="auraq-erooh.pdf" download="Auraq-e-Rooh.pdf">⬇ Download PDF</a>
+        <button class="btn" onclick="shareBook()">🔗 Share Link</button>
+      </div>
+    </header>
+
+    <main>
+      <div id="book-status" class="urdu">کتاب کے صفحات لوڈ ہو رہے ہیں، براہِ کرم انتظار کریں...</div>
+
+      <div class="flipbook-wrapper">
+        <div id="flipbook"></div>
+      </div>
+
+      <div class="book-controls">
+        <button class="btn urdu" onclick="flipNext()">◀ اگلا صفحہ (Next)</button>
+        <span id="page-indicator" dir="ltr">Page 1</span>
+        <button class="btn urdu" onclick="flipPrev()">پچھلا صفحہ (Prev) ▶</button>
+      </div>
+    </main>
+
+    <section class="comments-section">
+      <h3 class="urdu">قارئین کی آراء (Comments)</h3>
+      <form class="comment-form" onsubmit="addComment(event)">
+        <input type="text" id="reader-name" placeholder="آپ کا نام (Your Name)" required />
+        <textarea id="reader-comment" rows="3" placeholder="کتاب کے بارے میں اپنی رائے لکھیں..." required></textarea>
+        <button type="submit" class="btn urdu" style="align-self: flex-start;">تبصرہ شائع کریں (Post Comment)</button>
+      </form>
+      <div id="comments-list"></div>
+    </section>
+  </div>
+
+  <div id="index-modal" class="modal" onclick="if(event.target===this) closeModal('index-modal')">
+    <div class="modal-box">
+      <div class="modal-header">
+        <h3 class="urdu" style="color: var(--gold);">فہرستِ مضامین</h3>
+        <button class="btn" onclick="closeModal('index-modal')">✕</button>
+      </div>
+      <ul class="chapter-list urdu">
+        <li onclick="jumpToBookPage(1)"><span>سرورق (Title Page)</span><span>1</span></li>
+        <li onclick="jumpToBookPage(3)"><span>فہرستِ مضامین</span><span>3</span></li>
+        <li onclick="jumpToBookPage(5)"><span>رازِ ہستی</span><span>4</span></li>
+        <li onclick="jumpToBookPage(12)"><span>میں نہیں جانتا</span><span>11</span></li>
+        <li onclick="jumpToBookPage(16)"><span>آئینۂ نفس</span><span>15</span></li>
+        <li onclick="jumpToBookPage(21)"><span>درویشی، میری دیوانگی</span><span>20</span></li>
+        <li onclick="jumpToBookPage(25)"><span>خواہشِ نجات</span><span>24</span></li>
+        <li onclick="jumpToBookPage(30)"><span>جب دل نے چھوڑ دیا</span><span>29</span></li>
+        <li onclick="jumpToBookPage(34)"><span>صُمٌّ بُكْمٌ عُمْيٌ</span><span>33</span></li>
+        <li onclick="jumpToBookPage(38)"><span>جب پردہ اٹھے گا</span><span>37</span></li>
+        <li onclick="jumpToBookPage(49)"><span>امیدِ توبہ باقی ہے</span><span>48</span></li>
+        <li onclick="jumpToBookPage(56)"><span>قربتِ عشقِ خداوندی</span><span>55</span></li>
+      </ul>
+    </div>
+  </div>
+
+  <div id="about-modal" class="modal" onclick="if(event.target===this) closeModal('about-modal')">
+    <div class="modal-box" dir="ltr">
+      <div class="modal-header">
+        <h3 style="color: var(--gold);">About The Book</h3>
+        <button class="btn" onclick="closeModal('about-modal')">✕</button>
+      </div>
+      <p style="line-height: 1.8; color: #e8dec8;">
+        <strong>Book Title:</strong> Auraq-e-Rooh (Volume 1) / اوراقِ روح<br>
+        <strong>Author:</strong> Mian Muzammil Ahmad<br>
+        <strong>Publisher:</strong> MMA Pixel Forge Studio (MPFS)<br><br>
+        All rights reserved. No part of this publication may be reproduced or transmitted without prior permission from MMA Pixel Forge Studio (MPFS).
+      </p>
+    </div>
+  </div>
+
+  <div id="toast">Link Copied!</div>
+
+  <script>
+    const PDF_URL = 'auraq-erooh.pdf';
+    let pageFlip = null;
+    let totalPdfPages = 0;
+
+    function playPageFlipSound() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const duration = 0.28;
+        const bufferSize = ctx.sampleRate * duration;
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+        const data = buffer.getChannelData(0);
+        for (let i = 0; i < bufferSize; i++) {
+          data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (ctx.sampleRate * 0.08));
+        }
+        const noise = ctx.createBufferSource();
+        noise.buffer = buffer;
+
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'bandpass';
+        filter.frequency.setValueAtTime(900, ctx.currentTime);
+        filter.frequency.exponentialRampToValueAtTime(2400, ctx.currentTime + duration);
+
+        const gain = ctx.createGain();
+        gain.gain.setValueAtTime(0.35, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
+
+        noise.connect(filter);
+        filter.connect(gain);
+        gain.connect(ctx.destination);
+        noise.start();
+      } catch (e) {}
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initPDFBook();
+      loadComments();
+
+      setTimeout(() => {
+        const loader = document.getElementById('loader-screen');
+        const splash = document.getElementById('splash-screen');
+        loader.style.opacity = '0';
+        setTimeout(() => {
+          loader.style.display = 'none';
+          splash.style.display = 'flex';
+
+          setTimeout(() => {
+            splash.classList.add('smoky-exit');
+            if (pageFlip) pageFlip.update();
+            setTimeout(() => {
+              splash.style.display = 'none';
+            }, 1800);
+          }, 3000);
+        }, 600);
+      }, 5000);
+    });
+
+    async function initPDFBook() {
+      try {
+        pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
+        const pdf = await pdfjsLib.getDocument(PDF_URL).promise;
+        totalPdfPages = pdf.numPages;
+
+        const flipbookEl = document.getElementById('flipbook');
+        const isMobile = window.innerWidth < 768;
+        const pageWidth = isMobile ? Math.min(window.innerWidth - 30, 360) : 440;
+        const pageHeight = Math.round(pageWidth * 1.414);
+
+        const firstPage = await pdf.getPage(1);
+        const coverViewport = firstPage.getViewport({ scale: 1.2 });
+        const coverCanvas = document.createElement('canvas');
+        coverCanvas.width = coverViewport.width;
+        coverCanvas.height = coverViewport.height;
+        await firstPage.render({ canvasContext: coverCanvas.getContext('2d'), viewport: coverViewport }).promise;
+        const coverDataUrl = coverCanvas.toDataURL('image/jpeg', 0.85);
+        document.getElementById('loader-sufi-img').src = coverDataUrl;
+        document.getElementById('splash-sufi-bg').style.backgroundImage = `url('${coverDataUrl}')`;
+
+        const pageElements = [];
+        for (let i = totalPdfPages; i >= 1; i--) {
+          const sheet = document.createElement('div');
+          sheet.className = 'page-sheet';
+          sheet.dataset.pdfPage = i;
+          if (i === 1 || i === totalPdfPages) {
+            sheet.dataset.density = 'hard';
+          }
+          const canvas = document.createElement('canvas');
+          sheet.appendChild(canvas);
+          flipbookEl.appendChild(sheet);
+          pageElements.push({ pdfPageNum: i, canvas });
+        }
+
+        pageFlip = new St.PageFlip(flipbookEl, {
+          width: pageWidth,
+          height: pageHeight,
+          size: 'fixed',
+          showCover: true,
+          usePortrait: isMobile,
+          flippingTime: 850,
+          maxShadowOpacity: 0.6,
+          mobileScrollSupport: false
+        });
+
+        pageFlip.loadFromHTML(document.querySelectorAll('.page-sheet'));
+
+        const startIndex = totalPdfPages - 1;
+        pageFlip.turnToPage(startIndex);
+        updateIndicator(1);
+
+        pageFlip.on('flip', (e) => {
+          playPageFlipSound();
+          const actualUrduPage = totalPdfPages - e.data;
+          updateIndicator(actualUrduPage);
+        });
+
+        for (const item of pageElements.reverse()) {
+          const page = await pdf.getPage(item.pdfPageNum);
+          const viewport = page.getViewport({ scale: 1.5 });
+          item.canvas.width = viewport.width;
+          item.canvas.height = viewport.height;
+          await page.render({ canvasContext: item.canvas.getContext('2d'), viewport }).promise;
+        }
+
+        document.getElementById('book-status').style.display = 'none';
+      } catch (err) {
+        document.getElementById('book-status').innerText = 'Error loading book: ' + err.message;
+      }
+    }
+
+    function updateIndicator(pageNum) {
+      document.getElementById('page-indicator').innerText = `Page ${pageNum} of ${totalPdfPages}`;
+    }
+
+    function flipNext() { if (pageFlip) pageFlip.flipPrev(); }
+    function flipPrev() { if (pageFlip) pageFlip.flipNext(); }
+    function goToCover() { if (pageFlip) pageFlip.flip(totalPdfPages - 1); }
+
+    function jumpToBookPage(pdfPageNumber) {
+      closeModal('index-modal');
+      if (pageFlip && pdfPageNumber <= totalPdfPages) {
+        pageFlip.flip(totalPdfPages - pdfPageNumber);
+      }
+    }
+
+    function shareBook() {
+      const shareUrl = window.location.origin + window.location.pathname;
+      if (navigator.share) {
+        navigator.share({
+          title: 'اوراقِ روح - Auraq-e-Rooh',
+          text: 'Read Auraq-e-Rooh by Mian Muzammil Ahmad',
+          url: shareUrl
+        });
+      } else {
+        navigator.clipboard.writeText(shareUrl);
+        showToast('Original URL Copied: ' + shareUrl);
+      }
+    }
+
+    function showToast(msg) {
+      const toast = document.getElementById('toast');
+      toast.innerText = msg;
+      toast.style.display = 'block';
+      setTimeout(() => { toast.style.display = 'none'; }, 3000);
+    }
+
+    function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+    function closeModal(id) { document.getElementById(id).style.display = 'none'; }
+
+    function loadComments() {
+      const saved = JSON.parse(localStorage.getItem('auraq_comments') || '[]');
+      const list = document.getElementById('comments-list');
+      if (saved.length === 0) {
+        list.innerHTML = '<p style="color:#999; font-size:0.9rem;">ابھی تک کوئی تبصرہ نہیں۔ پہلے قاری بنیں!</p>';
+        return;
+      }
+      list.innerHTML = saved.map(c => `
+        <div class="comment-item">
+          <div class="comment-author">${c.name} <span style="font-size:0.75rem; color:#888; font-weight:normal;">(${c.date})</span></div>
+          <div class="comment-text urdu">${c.text}</div>
+        </div>
+      `).join('');
+    }
+
+    function addComment(e) {
+      e.preventDefault();
+      const name = document.getElementById('reader-name').value.trim();
+      const text = document.getElementById('reader-comment').value.trim();
+      if (!name || !text) return;
+
+      const saved = JSON.parse(localStorage.getItem('auraq_comments') || '[]');
+      saved.unshift({ name, text, date: new Date().toLocaleDateString() });
+      localStorage.setItem('auraq_comments', JSON.stringify(saved));
+
+      document.getElementById('reader-name').value = '';
+      document.getElementById('reader-comment').value = '';
+      loadComments();
+      showToast('آپ کا تبصرہ شامل کر دیا گیا ہے!');
+    }
+  </script>
+</body>
+</html>
