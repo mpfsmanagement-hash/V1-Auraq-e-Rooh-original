@@ -1,11 +1,430 @@
 <!DOCTYPE html>
-<html lang="ur">
-  <head>
-    <meta charset="UTF-8" />
-    <meta http-equiv="refresh" content="0; url=auraq-erooh.pdf" />
-    <title>اوراقِ روح - گلدستہ نمبر ۱</title>
-  </head>
-  <body>
-    <p>کتاب کھل رہی ہے... اگر خود نہ کھلے تو <a href="auraq-erooh.pdf">یہاں کلک کریں</a>۔</p>
-  </body>
-</html>
+<html lang="ur" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>اوراقِ روح | Auraq-e-Rooh</title>
+
+  <!-- Google Fonts for Urdu (Noto Nastaliq Urdu) & English (Cinzel & Poppins) -->
+  <link rel="preconnect" href="https://googleapis.com">
+  <link rel="preconnect" href="https://gstatic.com" crossorigin>
+  <link href="https://googleapis.com/css2?family=Cinzel:wght@600;700&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
+  <!-- PDF.js & StPageFlip Libraries -->
+  <script src="https://cloudflare.com"></script>
+  <script src="https://jsdelivr.net"></script>
+
+  <style>
+    :root {
+      --gold: #d4af37;
+      --gold-light: #f3e5ab;
+      --dark-bg: #120d0a;
+      --parchment: #f4ebd9;
+      --text-dark: #2c1e16;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: radial-gradient(circle at center, #2b1d14 0%, #0d0907 100%);
+      color: var(--gold-light);
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .urdu {
+      font-family: 'Noto Nastaliq Urdu', serif;
+      line-height: 2.1;
+    }
+
+    /* ================= STAGE 1: 5-SEC CIRCULAR SUFI LOADER ================= */
+    #loader-screen {
+      position: fixed;
+      inset: 0;
+      background: #0d0907;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      transition: opacity 0.8s ease;
+    }
+
+    .loader-wrapper {
+      position: relative;
+      width: 240px;
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* SVG Circular Progress Ring */
+    .progress-ring {
+      position: absolute;
+      width: 240px;
+      height: 240px;
+      transform: rotate(-90deg);
+    }
+
+    .progress-ring circle {
+      fill: transparent;
+      stroke-width: 5;
+      cx: 120;
+      cy: 120;
+      r: 112;
+    }
+
+    .progress-ring .bg-ring {
+      stroke: rgba(212, 175, 55, 0.2);
+    }
+
+    .progress-ring .fg-ring {
+      stroke: var(--gold);
+      stroke-dasharray: 704;
+      stroke-dashoffset: 704;
+      stroke-linecap: round;
+      animation: fillRing 5s linear forwards;
+    }
+
+    @keyframes fillRing {
+      to { stroke-dashoffset: 0; }
+    }
+
+    /* Rotating Circular Sufi Image */
+    .sufi-circle {
+      width: 205px;
+      height: 205px;
+      border-radius: 50%;
+      overflow: hidden;
+      position: relative;
+      border: 2px solid rgba(212, 175, 55, 0.6);
+      box-shadow: 0 0 35px rgba(212, 175, 55, 0.35);
+      animation: spinSlow 5s linear infinite;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: #1e140e;
+    }
+
+    .sufi-circle img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      filter: sepia(0.25) brightness(0.75);
+    }
+
+    @keyframes spinSlow {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+    /* Fixed Urdu Text Over Rotating Circle */
+    .circle-overlay-text {
+      position: absolute;
+      z-index: 2;
+      color: #fff;
+      font-size: 1.7rem;
+      font-weight: 700;
+      text-shadow: 0 2px 12px #000, 0 0 20px var(--gold);
+      pointer-events: none;
+    }
+
+    /* ================= STAGE 2: 3-SEC SMOKY SPLASH SCREEN ================= */
+    #splash-screen {
+      position: fixed;
+      inset: 0;
+      z-index: 9998;
+      background: #0d0907;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .splash-bg {
+      position: absolute;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.35;
+      filter: blur(2px) sepia(0.3);
+      transform: scale(1.05);
+      animation: zoomBg 4s ease forwards;
+    }
+
+    @keyframes zoomBg {
+      to { transform: scale(1.15); }
+    }
+
+    .splash-content {
+      position: relative;
+      z-index: 2;
+      padding: 30px;
+      max-width: 750px;
+      background: radial-gradient(circle, rgba(18,13,10,0.85) 0%, rgba(18,13,10,0.4) 100%);
+      border-radius: 20px;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      box-shadow: 0 0 50px rgba(0,0,0,0.9);
+    }
+
+    .splash-title-ur {
+      font-size: 3.2rem;
+      color: var(--gold);
+      text-shadow: 0 4px 15px rgba(0,0,0,0.9);
+      margin-bottom: 5px;
+    }
+
+    .splash-title-en {
+      font-family: 'Cinzel', serif;
+      font-size: 2rem;
+      letter-spacing: 5px;
+      color: #fff;
+      margin-bottom: 18px;
+    }
+
+    .splash-subtitle {
+      font-size: 1.5rem;
+      color: var(--gold-light);
+      margin-bottom: 25px;
+    }
+
+    .splash-meta {
+      font-size: 1.05rem;
+      color: #e0d3b8;
+      line-height: 1.8;
+      border-top: 1px solid rgba(212, 175, 55, 0.3);
+      padding-top: 15px;
+    }
+
+    /* Smoky Dissolve Effect */
+    .smoky-exit {
+      animation: smokyFadeOut 1.8s ease forwards;
+    }
+
+    @keyframes smokyFadeOut {
+      0% {
+        opacity: 1;
+        filter: blur(0px);
+        transform: scale(1);
+      }
+      50% {
+        opacity: 0.6;
+        filter: blur(12px);
+        transform: scale(1.06);
+      }
+      100% {
+        opacity: 0;
+        filter: blur(30px);
+        transform: scale(1.15);
+        visibility: hidden;
+      }
+    }
+
+    /* ================= STAGE 3: MAIN BOOK INTERFACE ================= */
+    #app-container {
+      display: none;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* Professional Header & Tabs */
+    header {
+      background: rgba(15, 10, 8, 0.95);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.3);
+      padding: 12px 24px;
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(8px);
+    }
+
+    .brand-title {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .brand-title h1 {
+      font-size: 1.4rem;
+      color: var(--gold);
+    }
+
+    .brand-title span {
+      font-family: 'Cinzel', serif;
+      font-size: 0.95rem;
+      color: #ccc;
+      letter-spacing: 2px;
+    }
+
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .btn {
+      background: rgba(212, 175, 55, 0.12);
+      color: var(--gold-light);
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: all 0.25s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      text-decoration: none;
+    }
+
+    .btn:hover {
+      background: var(--gold);
+      color: #120d0a;
+      font-weight: 600;
+    }
+
+    /* Book Stage */
+    main {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 30px 15px;
+    }
+
+    #book-status {
+      margin-bottom: 15px;
+      font-size: 0.95rem;
+      color: var(--gold);
+    }
+
+    .flipbook-wrapper {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 100%;
+      max-width: 1100px;
+      margin: 0 auto;
+      perspective: 2000px;
+    }
+
+    #flipbook {
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+    }
+
+    .page-sheet {
+      background: var(--parchment);
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid #d5c4a1;
+      box-shadow: inset 0 0 25px rgba(0,0,0,0.12);
+    }
+
+    .page-sheet canvas {
+      width: 100% !important;
+      height: 100% !important;
+      object-fit: contain;
+    }
+
+    .book-controls {
+      margin-top: 22px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      background: rgba(15, 10, 8, 0.8);
+      padding: 10px 22px;
+      border-radius: 30px;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+    }
+
+    /* Modals (Index / Chapters) */
+    .modal {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.8);
+      z-index: 500;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-box {
+      background: #1c140f;
+      border: 1px solid var(--gold);
+      border-radius: 14px;
+      max-width: 500px;
+      width: 100%;
+      padding: 25px;
+      max-height: 80vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(212,175,55,0.3);
+      padding-bottom: 10px;
+      margin-bottom: 15px;
+    }
+
+    .chapter-list {
+      list-style: none;
+    }
+
+    .chapter-list li {
+      padding: 10px 12px;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      transition: background 0.2s;
+    }
+
+    .chapter-list li:hover {
+      background: rgba(212, 175, 55, 0.2);
+      color: var(--gold);
+    }
+
+    /* Comments Section */
+    .comments-section {
+      max-width: 850px;
+      width: 95%;
+      margin: 30px auto 50px;
+      background: rgba(18, 13, 10, 0.9);
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      border-radius: 14px;
+      padding: 25px;
+    }
+
+    .comments-section h3 {
+      color: var(--gold);
+      margin-bottom: 15px;
+      font-size: 1.3rem;
+    }
+
+    .comment-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 25px;
+    }
+
+    .comment-form input, .comment-form textarea {
+      width: 100%;
+      padding: 12px;
