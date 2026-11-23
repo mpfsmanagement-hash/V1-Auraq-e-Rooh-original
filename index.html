@@ -37,7 +37,6 @@
       line-height: 2.1;
     }
 
-    /* STAGE 1: 5-SEC CIRCULAR SUFI LOADER */
     #loader-screen {
       position: fixed;
       inset: 0;
@@ -123,7 +122,6 @@
       pointer-events: none;
     }
 
-    /* STAGE 2: 3-SEC SMOKY SPLASH SCREEN */
     #splash-screen {
       position: fixed;
       inset: 0;
@@ -197,7 +195,6 @@
       100% { opacity: 0; filter: blur(30px); transform: scale(1.15); visibility: hidden; }
     }
 
-    /* STAGE 3: MAIN BOOK INTERFACE */
     #app-container {
       display: flex;
       flex-direction: column;
@@ -422,3 +419,12 @@
       color: #120d0a;
       padding: 10px 24px;
       border-radius: 25px;
+      font-weight: 600;
+      display: none;
+      z-index: 9999;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.6);
+    }
+  </style>
+</head>
+<body>
+
