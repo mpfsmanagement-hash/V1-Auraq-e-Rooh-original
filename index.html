@@ -7,30 +7,27 @@
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800&family=Gulzar&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Gulzar&family=Noto+Nastaliq+Urdu:wght@400;600;700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/page-flip/dist/js/page-flip.browser.min.js"></script>
 
   <style>
     :root {
-      --gold: #e2b857;
-      --gold-bright: #ffdf8e;
-      --gold-dim: rgba(226, 184, 87, 0.25);
-      --bg-deep: #0b0806;
-      --bg-surface: #16100c;
-      --bg-card: rgba(26, 19, 14, 0.85);
-      --parchment: #f5ecdc;
-      --text-main: #f7eedc;
-      --text-muted: #c2b296;
+      --gold: #d4af37;
+      --gold-bright: #f5d76e;
+      --gold-light: #f3e5ab;
+      --dark-bg: #110c09;
+      --card-bg: rgba(24, 17, 13, 0.92);
+      --parchment: #f4ebd9;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
     body {
-      background: radial-gradient(circle at 50% 20%, #241810 0%, #090605 100%);
-      color: var(--text-main);
-      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: radial-gradient(circle at top center, #2c1d13 0%, #0d0907 100%);
+      color: var(--gold-light);
+      font-family: 'Poppins', sans-serif;
       min-height: 100vh;
       overflow-x: hidden;
       display: flex;
@@ -38,32 +35,31 @@
     }
 
     .urdu {
-      font-family: 'Gulzar', 'Noto Nastaliq Urdu', serif;
-      line-height: 2.25;
-      letter-spacing: 0.2px;
+      font-family: 'Noto Nastaliq Urdu', 'Gulzar', serif;
+      line-height: 2.3;
     }
 
-    .urdu-title {
-      font-family: 'Noto Nastaliq Urdu', 'Gulzar', serif;
-      line-height: 2.0;
+    .urdu-heading {
+      font-family: 'Gulzar', 'Noto Nastaliq Urdu', serif;
+      line-height: 1.9;
     }
 
     /* ================= STAGE 1: 5-SEC THEMED CIRCULAR LOADER ================= */
     #loader-screen {
       position: fixed;
       inset: 0;
-      background: radial-gradient(circle at center, #1f140d 0%, #070504 100%);
-      z-index: 10000;
+      background: radial-gradient(circle at center, #24170f 0%, #090605 100%);
+      z-index: 9999;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: opacity 0.6s ease;
+      transition: opacity 0.7s ease;
     }
 
-    .loader-center-box {
+    .loader-wrapper {
       position: relative;
-      width: 270px;
-      height: 270px;
+      width: 260px;
+      height: 260px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -71,183 +67,169 @@
 
     .progress-ring {
       position: absolute;
-      inset: 0;
-      width: 270px;
-      height: 270px;
+      width: 260px;
+      height: 260px;
       transform: rotate(-90deg);
-      z-index: 3;
     }
 
     .progress-ring circle {
       fill: transparent;
       stroke-width: 5;
-      cx: 135;
-      cy: 135;
-      r: 125;
+      cx: 130;
+      cy: 130;
+      r: 120;
     }
 
-    .progress-ring .bg-ring { stroke: rgba(226, 184, 87, 0.15); }
+    .progress-ring .bg-ring { stroke: rgba(212, 175, 55, 0.18); }
 
     .progress-ring .fg-ring {
-      stroke: var(--gold-bright);
-      stroke-dasharray: 785;
-      stroke-dashoffset: 785;
+      stroke: var(--gold);
+      stroke-dasharray: 754;
+      stroke-dashoffset: 754;
       stroke-linecap: round;
-      filter: drop-shadow(0 0 8px rgba(226, 184, 87, 0.8));
+      filter: drop-shadow(0 0 8px rgba(212, 175, 55, 0.7));
       animation: fillRing 5s linear forwards;
     }
 
     @keyframes fillRing { to { stroke-dashoffset: 0; } }
 
-    .theme-orbit-circle {
-      width: 230px;
-      height: 230px;
+    .themed-circle {
+      width: 222px;
+      height: 222px;
       border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #3a2618 0%, #140d09 75%, #0a0705 100%);
-      border: 2px solid rgba(226, 184, 87, 0.55);
-      box-shadow: 0 0 45px rgba(226, 184, 87, 0.35), inset 0 0 30px rgba(226, 184, 87, 0.25);
       position: relative;
+      background: radial-gradient(circle at center, #2e1f15 0%, #140d09 85%);
+      border: 2px solid rgba(212, 175, 55, 0.55);
+      box-shadow: inset 0 0 30px rgba(212, 175, 55, 0.25), 0 0 40px rgba(212, 175, 55, 0.25);
       display: flex;
       align-items: center;
       justify-content: center;
-      animation: spinOrbit 5s linear infinite;
+      animation: pulseGlow 2.5s ease-in-out infinite alternate;
     }
 
-    .theme-orbit-circle::before {
+    .themed-circle::before {
       content: "";
       position: absolute;
       inset: 10px;
       border-radius: 50%;
-      border: 1px dashed rgba(226, 184, 87, 0.5);
+      border: 1px dashed rgba(212, 175, 55, 0.45);
+      animation: spinSlow 5s linear infinite;
     }
 
-    .theme-orbit-circle::after {
-      content: "";
-      position: absolute;
-      top: -6px;
-      left: 50%;
-      transform: translateX(-50%);
-      width: 12px;
-      height: 12px;
-      border-radius: 50%;
-      background: var(--gold-bright);
-      box-shadow: 0 0 15px var(--gold-bright);
-    }
-
-    @keyframes spinOrbit {
+    @keyframes spinSlow {
       0% { transform: rotate(0deg); }
       100% { transform: rotate(360deg); }
     }
 
-    .loader-urdu-title {
-      position: absolute;
-      z-index: 4;
-      font-size: 2.35rem;
-      font-weight: 700;
-      color: var(--gold-bright);
-      text-shadow: 0 4px 18px rgba(0, 0, 0, 0.95), 0 0 25px rgba(226, 184, 87, 0.6);
-      pointer-events: none;
+    @keyframes pulseGlow {
+      from { box-shadow: inset 0 0 25px rgba(212, 175, 55, 0.2), 0 0 30px rgba(212, 175, 55, 0.2); }
+      to { box-shadow: inset 0 0 40px rgba(212, 175, 55, 0.45), 0 0 55px rgba(212, 175, 55, 0.4); }
     }
 
-    /* ================= STAGE 2: DIRECT 3-SEC SMOKY SPLASH SCREEN ================= */
+    .circle-urdu-title {
+      position: relative;
+      z-index: 2;
+      font-size: 2.2rem;
+      color: var(--gold-bright);
+      text-shadow: 0 3px 15px rgba(0, 0, 0, 0.9), 0 0 25px rgba(212, 175, 55, 0.6);
+      text-align: center;
+    }
+
+    /* ================= STAGE 2: 3-SEC SMOKY TITLE PAGE (NO EMOJIS) ================= */
     #splash-screen {
       position: fixed;
       inset: 0;
-      z-index: 9999;
-      background: radial-gradient(circle at center, #26180f 0%, #080604 100%);
+      z-index: 9998;
+      background: #0a0705;
       display: none;
       align-items: center;
       justify-content: center;
       text-align: center;
       overflow: hidden;
-      padding: 20px;
     }
 
-    .smoke-mist {
+    .splash-bg {
       position: absolute;
-      inset: -25%;
-      background:
-        radial-gradient(circle at 25% 35%, rgba(226, 184, 87, 0.14), transparent 45%),
-        radial-gradient(circle at 75% 65%, rgba(190, 140, 70, 0.12), transparent 50%),
-        radial-gradient(circle at 50% 50%, rgba(255, 235, 190, 0.06), transparent 60%);
-      filter: blur(32px);
-      animation: driftSmoke 6s ease-in-out infinite alternate;
-      pointer-events: none;
+      inset: 0;
+      background-size: cover;
+      background-position: center;
+      opacity: 0.32;
+      filter: sepia(0.35) contrast(1.1);
+      transform: scale(1.02);
+      animation: slowZoom 4.5s ease forwards;
     }
 
-    @keyframes driftSmoke {
-      0% { transform: scale(1) translate(-2%, -2%) rotate(0deg); }
-      100% { transform: scale(1.15) translate(2%, 2%) rotate(4deg); }
+    @keyframes slowZoom { to { transform: scale(1.12); } }
+
+    .splash-smoke-layer {
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at center, rgba(18, 12, 9, 0.45) 0%, rgba(10, 7, 5, 0.96) 90%);
     }
 
-    .splash-card {
+    .splash-content {
       position: relative;
       z-index: 2;
-      max-width: 720px;
-      width: 100%;
-      padding: 45px 35px;
-      border-radius: 26px;
-      background: linear-gradient(145deg, rgba(32, 22, 15, 0.92), rgba(14, 10, 7, 0.96));
-      border: 1px solid rgba(226, 184, 87, 0.45);
-      box-shadow: 0 30px 90px rgba(0, 0, 0, 0.95), inset 0 0 40px rgba(226, 184, 87, 0.08);
-    }
-
-    .splash-ornament {
-      color: var(--gold);
-      font-size: 1.4rem;
-      letter-spacing: 8px;
-      margin-bottom: 10px;
-      opacity: 0.85;
+      padding: 45px 40px;
+      max-width: 780px;
+      width: 92%;
+      background: rgba(16, 11, 8, 0.85);
+      border-radius: 20px;
+      border: 1px solid rgba(212, 175, 55, 0.45);
+      box-shadow: 0 25px 70px rgba(0,0,0,0.95), inset 0 0 35px rgba(212, 175, 55, 0.12);
+      backdrop-filter: blur(8px);
     }
 
     .splash-title-ur {
       font-size: 3.6rem;
       color: var(--gold-bright);
-      text-shadow: 0 6px 24px rgba(0, 0, 0, 0.95);
+      text-shadow: 0 4px 20px rgba(0,0,0,0.95);
       margin-bottom: 4px;
     }
 
     .splash-title-en {
       font-family: 'Cinzel', serif;
-      font-size: 2rem;
-      font-weight: 700;
+      font-size: 2.1rem;
       letter-spacing: 6px;
       color: #ffffff;
       margin-bottom: 18px;
     }
 
+    .ornamental-line {
+      width: 220px;
+      height: 2px;
+      margin: 0 auto 20px;
+      background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    }
+
     .splash-subtitle {
       font-size: 1.7rem;
-      color: var(--gold);
-      margin-bottom: 28px;
+      color: var(--gold-light);
+      margin-bottom: 26px;
     }
 
-    .splash-credits {
-      border-top: 1px solid rgba(226, 184, 87, 0.3);
-      padding-top: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
+    .splash-meta {
       font-size: 1.05rem;
-      color: #e6d7be;
+      color: #e6dac3;
+      line-height: 2;
+      border-top: 1px solid rgba(212, 175, 55, 0.3);
+      padding-top: 18px;
     }
 
-    .splash-credits strong {
-      color: var(--gold-bright);
+    .splash-meta strong {
+      color: var(--gold);
       font-weight: 600;
     }
 
-    .smoky-dissolve {
-      animation: smokyFadeOut 1.8s cubic-bezier(0.4, 0, 0.2, 1) forwards;
-    }
+    .smoky-exit { animation: smokyFadeOut 1.8s ease forwards; }
 
     @keyframes smokyFadeOut {
       0% { opacity: 1; filter: blur(0px); transform: scale(1); }
-      45% { opacity: 0.65; filter: blur(14px); transform: scale(1.06); }
-      100% { opacity: 0; filter: blur(38px); transform: scale(1.16); visibility: hidden; }
+      45% { opacity: 0.65; filter: blur(10px); transform: scale(1.05); }
+      100% { opacity: 0; filter: blur(28px); transform: scale(1.14); visibility: hidden; }
     }
 
-    /* ================= STAGE 3: PROFESSIONAL APP SHELL ================= */
+    /* ================= STAGE 3: MAIN APPLICATION ================= */
     #app-container {
       display: none;
       flex-direction: column;
@@ -255,39 +237,33 @@
     }
 
     header {
-      background: rgba(14, 10, 7, 0.94);
-      border-bottom: 1px solid rgba(226, 184, 87, 0.28);
+      background: rgba(13, 9, 7, 0.96);
+      border-bottom: 1px solid rgba(212, 175, 55, 0.35);
       padding: 12px 24px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      gap: 12px;
       position: sticky;
       top: 0;
       z-index: 200;
-      backdrop-filter: blur(14px);
+      backdrop-filter: blur(10px);
     }
 
-    .brand-area {
+    .brand-title {
       display: flex;
       align-items: center;
       gap: 12px;
-      cursor: pointer;
     }
 
-    .brand-area h1 {
-      font-size: 1.65rem;
-      color: var(--gold-bright);
-    }
+    .brand-title h1 { font-size: 1.65rem; color: var(--gold-bright); }
 
-    .brand-area span {
+    .brand-title span {
       font-family: 'Cinzel', serif;
-      font-size: 0.85rem;
-      color: var(--text-muted);
+      font-size: 0.9rem;
+      color: #cbbba0;
       letter-spacing: 2px;
-      border-right: 1px solid var(--gold-dim);
-      padding-right: 12px;
     }
 
     .nav-tabs {
@@ -298,90 +274,115 @@
     }
 
     .tab-btn {
-      background: rgba(226, 184, 87, 0.08);
-      color: var(--text-main);
-      border: 1px solid rgba(226, 184, 87, 0.28);
-      padding: 6px 15px;
-      border-radius: 10px;
+      background: rgba(212, 175, 55, 0.1);
+      color: var(--gold-light);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      padding: 6px 14px;
+      border-radius: 8px;
       cursor: pointer;
-      font-size: 0.98rem;
+      font-size: 0.95rem;
       transition: all 0.25s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 7px;
-      text-decoration: none;
     }
 
     .tab-btn:hover, .tab-btn.active {
-      background: linear-gradient(135deg, #e2b857, #c59636);
-      color: #120c08;
+      background: var(--gold);
+      color: #120d0a;
       font-weight: 700;
-      border-color: var(--gold-bright);
-      box-shadow: 0 4px 16px rgba(226, 184, 87, 0.35);
+      box-shadow: 0 0 15px rgba(212, 175, 55, 0.45);
     }
 
-    .lamp-toggle.lamp-on {
-      background: #ffdf8e;
-      color: #120c08;
-      font-weight: 700;
-      box-shadow: 0 0 22px rgba(255, 223, 142, 0.85);
+    .lamp-toggle-btn {
+      background: rgba(255, 215, 0, 0.15);
+      color: #ffe680;
+      border: 1px solid #ffd700;
+      padding: 6px 14px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
     }
 
-    /* ================= VIEWS / PAGES SYSTEM ================= */
+    .lamp-toggle-btn.lamp-on {
+      background: #ffd700;
+      color: #120d0a;
+      font-weight: 700;
+      box-shadow: 0 0 22px rgba(255, 215, 0, 0.85);
+    }
+
+    /* ================= VIEWS / DEDICATED PAGES ================= */
     .page-view {
       display: none;
       flex: 1;
       width: 100%;
-      max-width: 1180px;
+      max-width: 1150px;
       margin: 0 auto;
-      padding: 25px 18px 60px;
+      padding: 25px 15px 50px;
       animation: fadeInView 0.4s ease;
     }
 
     .page-view.active-view {
       display: flex;
       flex-direction: column;
+      align-items: center;
     }
 
     @keyframes fadeInView {
-      from { opacity: 0; transform: translateY(8px); }
+      from { opacity: 0; transform: translateY(10px); }
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* ================= READING ROOM & BRIGHT LAMP ================= */
-    #view-read {
-      align-items: center;
-      justify-content: center;
-      position: relative;
+    .section-card {
+      background: var(--card-bg);
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      border-radius: 18px;
+      padding: 32px;
+      width: 100%;
+      box-shadow: 0 20px 50px rgba(0,0,0,0.75);
     }
 
-    #lamp-assembly {
+    .section-heading {
+      font-size: 2.1rem;
+      color: var(--gold-bright);
+      text-align: center;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+      padding-bottom: 14px;
+    }
+
+    /* ================= LAMP & CENTERED BOOK STAGE ================= */
+    .reading-stage {
+      position: relative;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding-top: 10px;
+    }
+
+    #lamp-fixture {
       display: none;
       flex-direction: column;
       align-items: center;
-      position: relative;
-      z-index: 30;
-      margin-bottom: -18px;
+      margin-bottom: -15px;
+      z-index: 50;
       pointer-events: none;
-    }
-
-    #lamp-assembly.is-lit {
-      display: flex;
+      position: relative;
     }
 
     .lamp-cord {
-      width: 3px;
-      height: 22px;
-      background: linear-gradient(to bottom, #4a3520, #d4af37);
+      width: 4px;
+      height: 30px;
+      background: linear-gradient(to bottom, #3b2a1e, #d4af37);
     }
 
     .lamp-shade {
-      width: 120px;
-      height: 44px;
-      background: linear-gradient(180deg, #3b2614 0%, #8a5e28 100%);
-      border-radius: 60px 60px 12px 12px;
-      border: 2px solid var(--gold-bright);
-      box-shadow: 0 8px 30px rgba(255, 220, 120, 0.7);
+      width: 150px;
+      height: 52px;
+      background: linear-gradient(135deg, #2b1d12 0%, #6e4e26 50%, #2b1d12 100%);
+      border: 2px solid #ffd700;
+      border-radius: 75px 75px 12px 12px;
+      box-shadow: 0 0 30px rgba(255, 215, 0, 0.85);
       position: relative;
       display: flex;
       justify-content: center;
@@ -394,42 +395,32 @@
       border-radius: 0 0 20px 20px;
       position: absolute;
       bottom: -10px;
-      box-shadow: 0 0 35px 15px rgba(255, 238, 160, 0.95);
+      box-shadow: 0 0 35px 14px rgba(255, 230, 120, 0.98);
     }
 
-    .lamp-beam {
+    .lamp-light-beam {
       position: absolute;
-      top: 56px;
+      top: 82px;
       width: 780px;
-      max-width: 96vw;
-      height: 620px;
-      background: radial-gradient(ellipse at 50% 0%, rgba(255, 244, 190, 0.58) 0%, rgba(255, 222, 130, 0.25) 45%, transparent 78%);
-      clip-path: polygon(42% 0%, 58% 0%, 100% 100%, 0% 100%);
+      max-width: 98vw;
+      height: 560px;
+      background: radial-gradient(ellipse at top, rgba(255, 238, 160, 0.55) 0%, rgba(255, 215, 90, 0.25) 45%, rgba(255, 200, 60, 0) 80%);
+      clip-path: polygon(38% 0%, 62% 0%, 100% 100%, 0% 100%);
       pointer-events: none;
-      z-index: 25;
+      z-index: 45;
       mix-blend-mode: screen;
     }
 
-    .book-stage {
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      width: 100%;
-      padding: 15px 0;
+    #flipbook.lamp-illuminated {
+      box-shadow: 0 0 65px rgba(255, 220, 100, 0.45), 0 25px 60px rgba(0, 0, 0, 0.9);
+      filter: brightness(1.12) contrast(1.04);
       transition: all 0.4s ease;
-    }
-
-    .book-stage.illuminated #flipbook {
-      box-shadow: 0 0 75px rgba(255, 232, 150, 0.55), 0 25px 65px rgba(0, 0, 0, 0.95);
-      filter: brightness(1.16) contrast(1.04);
     }
 
     #book-status {
       margin-bottom: 14px;
       font-size: 1.15rem;
-      color: var(--gold-bright);
+      color: var(--gold);
       text-align: center;
     }
 
@@ -438,11 +429,12 @@
       justify-content: center;
       align-items: center;
       width: 100%;
+      margin: 0 auto;
     }
 
     #flipbook {
-      box-shadow: 0 25px 65px rgba(0, 0, 0, 0.9);
-      transition: filter 0.35s ease, box-shadow 0.35s ease;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.9);
+      transition: all 0.4s ease;
     }
 
     .page-sheet {
@@ -461,282 +453,185 @@
       object-fit: contain;
     }
 
-    .book-controls-bar {
+    .book-controls {
       margin-top: 22px;
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
       justify-content: center;
-      align-items: center;
-      gap: 14px;
-      background: rgba(16, 11, 8, 0.9);
-      padding: 10px 22px;
-      border-radius: 40px;
-      border: 1px solid rgba(226, 184, 87, 0.35);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      gap: 18px;
+      background: rgba(15, 10, 8, 0.9);
+      padding: 10px 26px;
+      border-radius: 35px;
+      border: 1px solid rgba(212, 175, 55, 0.35);
     }
 
-    /* ================= BROWSER AUDIO READER BAR ================= */
-    .audio-player-card {
-      margin-top: 18px;
-      width: 100%;
-      max-width: 780px;
-      background: linear-gradient(145deg, rgba(28, 20, 14, 0.95), rgba(15, 10, 7, 0.98));
-      border: 1px solid rgba(226, 184, 87, 0.4);
-      border-radius: 18px;
-      padding: 14px 22px;
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      box-shadow: 0 12px 35px rgba(0,0,0,0.7);
-    }
-
-    .audio-info {
-      display: flex;
-      align-items: center;
-      gap: 12px;
-    }
-
-    .audio-wave {
-      display: flex;
-      align-items: flex-end;
-      gap: 3px;
-      height: 20px;
-    }
-
-    .audio-wave span {
-      width: 3px;
-      height: 6px;
-      background: var(--gold-bright);
-      border-radius: 2px;
-      transition: height 0.2s;
-    }
-
-    .audio-wave.playing span {
-      animation: wavePulse 0.8s ease-in-out infinite alternate;
-    }
-
-    .audio-wave.playing span:nth-child(2) { animation-delay: 0.2s; }
-    .audio-wave.playing span:nth-child(3) { animation-delay: 0.4s; }
-    .audio-wave.playing span:nth-child(4) { animation-delay: 0.1s; }
-
-    @keyframes wavePulse {
-      from { height: 5px; }
-      to { height: 20px; }
-    }
-
-    .audio-controls {
-      display: flex;
-      flex-wrap: wrap;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .audio-select {
-      background: #1f1610;
-      color: var(--gold-light);
-      border: 1px solid rgba(226, 184, 87, 0.35);
-      padding: 6px 10px;
-      border-radius: 8px;
-      font-size: 0.85rem;
-    }
-
-    /* ================= DEDICATED CONTENT PAGES ================= */
-    .section-card {
-      background: var(--bg-card);
-      border: 1px solid rgba(226, 184, 87, 0.32);
-      border-radius: 22px;
-      padding: 35px;
-      box-shadow: 0 20px 55px rgba(0,0,0,0.75);
-      backdrop-filter: blur(10px);
-    }
-
-    .section-header {
-      text-align: center;
-      margin-bottom: 30px;
-      border-bottom: 1px solid rgba(226, 184, 87, 0.25);
-      padding-bottom: 18px;
-    }
-
-    .section-header h2 {
-      font-size: 2.2rem;
-      color: var(--gold-bright);
-    }
-
-    .section-header p {
-      color: var(--text-muted);
-      font-size: 1.05rem;
-    }
-
-    /* About Grid */
-    .about-grid {
+    /* ================= CLASSIC TAARUF PAGE ================= */
+    .taaruf-grid {
       display: grid;
-      grid-template-columns: 260px 1fr;
-      gap: 32px;
+      grid-template-columns: 1fr 2fr;
+      gap: 30px;
       align-items: center;
     }
 
     @media (max-width: 768px) {
-      .about-grid { grid-template-columns: 1fr; text-align: center; }
+      .taaruf-grid { grid-template-columns: 1fr; text-align: center; }
     }
 
-    .about-cover-box {
-      border-radius: 14px;
-      overflow: hidden;
-      border: 2px solid var(--gold);
-      box-shadow: 0 15px 40px rgba(0,0,0,0.8);
-    }
-
-    .about-cover-box img {
+    .taaruf-cover-box img {
       width: 100%;
-      display: block;
-    }
-
-    /* Chapters Table */
-    .index-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(310px, 1fr));
-      gap: 14px;
-    }
-
-    .index-item {
-      background: rgba(255, 255, 255, 0.03);
-      border: 1px solid rgba(226, 184, 87, 0.22);
+      max-width: 280px;
       border-radius: 12px;
-      padding: 14px 20px;
+      border: 2px solid var(--gold);
+      box-shadow: 0 15px 35px rgba(0,0,0,0.8);
+    }
+
+    .taaruf-details p {
+      font-size: 1.15rem;
+      color: #efe4ce;
+      margin-bottom: 16px;
+    }
+
+    /* ================= HORIZONTAL NUMBERED LISTS (FEHRIST & INWAANAT) ================= */
+    .horizontal-list {
       display: flex;
-      justify-content: space-between;
+      flex-direction: column;
+      gap: 14px;
+      width: 100%;
+    }
+
+    .horizontal-row {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(212, 175, 55, 0.28);
+      border-right: 4px solid var(--gold);
+      border-radius: 12px;
+      padding: 16px 22px;
+      display: flex;
       align-items: center;
-      cursor: pointer;
+      justify-content: space-between;
+      gap: 18px;
       transition: all 0.25s ease;
     }
 
-    .index-item:hover {
-      background: rgba(226, 184, 87, 0.16);
+    .horizontal-row:hover {
+      background: rgba(212, 175, 55, 0.14);
+      transform: translateX(-4px);
       border-color: var(--gold-bright);
-      transform: translateY(-2px);
+    }
+
+    .fehrist-row {
+      cursor: pointer;
+    }
+
+    .row-main {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      flex: 1;
+    }
+
+    .num-badge {
+      min-width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      background: rgba(212, 175, 55, 0.16);
+      border: 1px solid var(--gold);
+      color: var(--gold-bright);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .row-title {
+      font-size: 1.35rem;
+      color: var(--gold-bright);
+    }
+
+    .row-desc {
+      font-size: 1.05rem;
+      color: #e4d8c0;
+      margin-top: 2px;
     }
 
     .page-badge {
-      background: var(--gold);
-      color: #120c08;
-      font-weight: 700;
-      padding: 2px 12px;
-      border-radius: 20px;
-      font-size: 0.9rem;
-    }
-
-    /* Complete Inwa'anat Cards */
-    .topics-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-      gap: 20px;
-    }
-
-    .topic-card {
-      background: linear-gradient(160deg, rgba(35, 24, 16, 0.9), rgba(18, 12, 8, 0.95));
-      border: 1px solid rgba(226, 184, 87, 0.28);
-      border-radius: 16px;
-      padding: 22px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      transition: transform 0.25s ease, border-color 0.25s ease;
-    }
-
-    .topic-card:hover {
-      transform: translateY(-4px);
-      border-color: var(--gold-bright);
-    }
-
-    .topic-num {
-      font-size: 0.85rem;
-      color: var(--gold);
-      font-weight: 600;
-      margin-bottom: 4px;
-    }
-
-    .topic-card h3 {
-      font-size: 1.45rem;
+      background: rgba(212, 175, 55, 0.18);
       color: var(--gold-bright);
-      margin-bottom: 10px;
+      padding: 5px 16px;
+      border-radius: 20px;
+      font-size: 1rem;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      white-space: nowrap;
+      flex-shrink: 0;
     }
 
-    .topic-card p {
-      font-size: 1.02rem;
-      color: #e4d6be;
-      margin-bottom: 18px;
+    @media (max-width: 680px) {
+      .inwaanat-row {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .inwaanat-row .tab-btn {
+        align-self: flex-end;
+      }
     }
 
-    .topic-actions {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-    }
-
-    /* Download & Share Box */
+    /* ================= DOWNLOAD & COMMENTS ================= */
     .share-box {
       display: flex;
       flex-direction: column;
       align-items: center;
       gap: 20px;
       text-align: center;
-      max-width: 650px;
-      margin: 0 auto;
     }
 
-    .url-copy-bar {
-      display: flex;
-      width: 100%;
-      background: #100b08;
+    .url-display {
+      background: #140e0a;
       border: 1px solid var(--gold);
-      border-radius: 12px;
-      overflow: hidden;
+      padding: 12px 20px;
+      border-radius: 10px;
+      color: var(--gold-light);
+      font-family: monospace;
+      font-size: 1rem;
+      word-break: break-all;
+      max-width: 100%;
     }
 
-    .url-copy-bar input {
-      flex: 1;
-      background: transparent;
-      border: none;
-      color: var(--gold-bright);
-      padding: 12px 16px;
-      font-size: 0.95rem;
-      direction: ltr;
-    }
-
-    /* Comments Page */
     .comment-form {
       display: flex;
       flex-direction: column;
       gap: 14px;
-      max-width: 700px;
-      margin: 0 auto 35px;
+      margin-bottom: 28px;
     }
 
     .comment-form input, .comment-form textarea {
       width: 100%;
-      padding: 14px 16px;
-      border-radius: 12px;
-      border: 1px solid rgba(226, 184, 87, 0.35);
-      background: #120c09;
+      padding: 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(212, 175, 55, 0.35);
+      background: #1c140f;
       color: #fff;
       font-size: 1.05rem;
-    }
-
-    .comment-list {
-      max-width: 700px;
-      margin: 0 auto;
-      display: flex;
-      flex-direction: column;
-      gap: 14px;
     }
 
     .comment-item {
       background: rgba(255,255,255,0.04);
       padding: 16px 20px;
-      border-radius: 12px;
+      border-radius: 10px;
+      margin-bottom: 14px;
       border-right: 4px solid var(--gold);
+    }
+
+    .comment-author {
+      font-weight: 700;
+      color: var(--gold-bright);
+      font-size: 1.05rem;
+      margin-bottom: 6px;
+    }
+
+    .comment-text {
+      font-size: 1.15rem;
+      color: #efe4ce;
     }
 
     #toast {
@@ -744,401 +639,495 @@
       bottom: 25px;
       left: 50%;
       transform: translateX(-50%);
-      background: var(--gold-bright);
-      color: #120c08;
+      background: var(--gold);
+      color: #120d0a;
       padding: 10px 26px;
-      border-radius: 30px;
+      border-radius: 25px;
       font-weight: 700;
       display: none;
-      z-index: 10001;
-      box-shadow: 0 8px 25px rgba(0,0,0,0.8);
+      z-index: 9999;
+      box-shadow: 0 5px 25px rgba(0,0,0,0.7);
     }
   </style>
 </head>
 <body>
 
-  <!-- STAGE 1: 5-SECOND THEMED CIRCULAR LOADER (NO IMAGE, PURE THEME + URDU TITLE) -->
+  <!-- STAGE 1: 5-SECOND THEMED CIRCULAR LOADER -->
   <div id="loader-screen">
-    <div class="loader-center-box">
+    <div class="loader-wrapper">
       <svg class="progress-ring">
         <circle class="bg-ring"></circle>
         <circle class="fg-ring"></circle>
       </svg>
-      <div class="theme-orbit-circle"></div>
-      <div class="loader-urdu-title urdu-title">اوراقِ روح</div>
+      <div class="themed-circle">
+        <div class="circle-urdu-title urdu-heading">اوراقِ روح</div>
+      </div>
     </div>
   </div>
 
-  <!-- STAGE 2: DIRECT 3-SECOND SMOKY TITLE PAGE -->
+  <!-- STAGE 2: 3-SECOND SMOKY TITLE PAGE -->
   <div id="splash-screen">
-    <div class="smoke-mist"></div>
-    <div class="splash-card">
-      <div class="splash-ornament">✦ ❖ ✦</div>
-      <div class="splash-title-ur urdu-title">اوراقِ روح</div>
+    <div class="splash-bg" id="splash-sufi-bg"></div>
+    <div class="splash-smoke-layer"></div>
+    <div class="splash-content">
+      <div class="splash-title-ur urdu-heading">اوراقِ روح</div>
       <div class="splash-title-en">AURAQ E ROOH</div>
+      <div class="ornamental-line"></div>
       <div class="splash-subtitle urdu">کامیاب سفر کا آغاز</div>
-      <div class="splash-credits" dir="ltr">
+      <div class="splash-meta" dir="ltr">
         <div><strong>Author:</strong> Mian Muzammil Ahmad</div>
         <div><strong>Publisher:</strong> MMA Pixel Forge Studio (MPFS)</div>
       </div>
     </div>
   </div>
 
-  <!-- STAGE 3: MAIN PROFESSIONAL BOOK APPLICATION -->
+  <!-- STAGE 3: MAIN APPLICATION -->
   <div id="app-container">
     <header>
-      <div class="brand-area" onclick="switchView('read')">
-        <h1 class="urdu-title">اوراقِ روح</h1>
-        <span>AURAQ E ROOH</span>
+      <div class="brand-title">
+        <h1 class="urdu-heading">اوراقِ روح</h1>
+        <span>| AURAQ E ROOH</span>
       </div>
 
       <nav class="nav-tabs">
-        <button class="tab-btn active urdu" id="tab-read" onclick="switchView('read')">📖 مطالعہ کتاب</button>
-        <button class="tab-btn urdu" id="tab-about" onclick="switchView('about')">📜 تعارفِ کتاب</button>
-        <button class="tab-btn urdu" id="tab-index" onclick="switchView('index')">📑 فہرستِ مضامین</button>
-        <button class="tab-btn urdu" id="tab-topics" onclick="switchView('topics')">✨ عنوانات</button>
-        <button class="tab-btn urdu" id="tab-download" onclick="switchView('download')">⬇ ڈاؤن لوڈ و شیئر</button>
-        <button class="tab-btn urdu" id="tab-comments" onclick="switchView('comments')">💬 قارئین کی آراء</button>
-        <button class="tab-btn lamp-toggle urdu" id="lamp-btn" onclick="toggleLamp()">🪔 چراغ: OFF</button>
+        <button class="tab-btn urdu active" data-target="view-read" onclick="switchView('view-read')">📖 مطالعہ کتاب</button>
+        <button class="tab-btn urdu" data-target="view-taaruf" onclick="switchView('view-taaruf')">📜 تعارفِ کتاب</button>
+        <button class="tab-btn urdu" data-target="view-fehrist" onclick="switchView('view-fehrist')">📑 فہرستِ مضامین</button>
+        <button class="tab-btn urdu" data-target="view-inwaanat" onclick="switchView('view-inwaanat')">✨ عنوانات</button>
+        <button class="tab-btn urdu" data-target="view-download" onclick="switchView('view-download')">⬇ ڈاؤن لوڈ و شیئر</button>
+        <button class="tab-btn urdu" data-target="view-comments" onclick="switchView('view-comments')">💬 قارئین کی آراء</button>
+        <button id="lamp-btn" class="lamp-toggle-btn urdu" onclick="toggleLamp()">🪔 چراغ: OFF</button>
       </nav>
     </header>
 
-    <!-- VIEW 1: CENTERED 3D FLIPBOOK + BRIGHT LAMP + AUDIO READER -->
+    <!-- PAGE 1: MUTALA-E-KITAB -->
     <section id="view-read" class="page-view active-view">
-      <div id="lamp-assembly">
-        <div class="lamp-cord"></div>
-        <div class="lamp-shade"><div class="lamp-bulb"></div></div>
-        <div class="lamp-beam"></div>
-      </div>
+      <div class="reading-stage">
+        <div id="lamp-fixture">
+          <div class="lamp-cord"></div>
+          <div class="lamp-shade">
+            <div class="lamp-bulb"></div>
+          </div>
+          <div class="lamp-light-beam"></div>
+        </div>
 
-      <div class="book-stage" id="book-stage">
         <div id="book-status" class="urdu">کتاب کے صفحات تیار ہو رہے ہیں، براہِ کرم انتظار کریں...</div>
 
         <div class="flipbook-wrapper">
           <div id="flipbook"></div>
         </div>
 
-        <div class="book-controls-bar">
+        <div class="book-controls">
           <button class="tab-btn urdu" onclick="flipNext()">◀ اگلا صفحہ</button>
-          <span id="page-indicator" dir="ltr" style="font-weight:600; color:var(--gold-bright);">Page 1</span>
+          <span id="page-indicator" dir="ltr" style="color: var(--gold-bright); font-weight: 600;">Page 1</span>
           <button class="tab-btn urdu" onclick="flipPrev()">پچھلا صفحہ ▶</button>
         </div>
-
-        <!-- BROWSER AUDIO BOOK PLAYER (READS CURRENT PAGE ALOUD) -->
-        <div class="audio-player-card">
-          <div class="audio-info">
-            <div class="audio-wave" id="audio-wave">
-              <span></span><span></span><span></span><span></span>
-            </div>
-            <div>
-              <div class="urdu" style="color:var(--gold-bright); font-size:1.05rem; line-height:1.6;">آڈیو سماعت (Audio Reader)</div>
-              <div id="audio-status-text" style="font-size:0.82rem; color:var(--text-muted);" dir="ltr">Listen to current page aloud</div>
-            </div>
-          </div>
-
-          <div class="audio-controls">
-            <select id="audio-rate" class="audio-select" dir="ltr" title="Reading Speed">
-              <option value="0.85">0.85x Slow</option>
-              <option value="1" selected>1.0x Normal</option>
-              <option value="1.2">1.2x Fast</option>
-            </select>
-            <button class="tab-btn urdu" id="btn-audio-play" onclick="toggleAudioReading()">🔊 سنیں (Play)</button>
-            <button class="tab-btn urdu" onclick="stopAudioReading()">⏹ روکیں (Stop)</button>
-          </div>
-        </div>
       </div>
     </section>
 
-    <!-- VIEW 2: TAARUF-E-KITAB (ABOUT THE BOOK) -->
-    <section id="view-about" class="page-view">
+    <!-- PAGE 2: CLASSIC TAARUF-E-KITAB -->
+    <section id="view-taaruf" class="page-view">
       <div class="section-card">
-        <div class="section-header">
-          <h2 class="urdu-title">تعارفِ کتاب</h2>
-          <p dir="ltr">About Auraq-e-Rooh — Volume 1</p>
-        </div>
-        <div class="about-grid">
-          <div class="about-cover-box">
-            <img id="about-cover-img" alt="Auraq-e-Rooh Cover">
+        <h2 class="section-heading urdu-heading">تعارفِ کتاب — اوراقِ روح</h2>
+        <div class="taaruf-grid">
+          <div class="taaruf-cover-box" style="text-align: center;">
+            <img id="taaruf-cover-img" src="" alt="اوراقِ روح سرورق">
           </div>
-          <div class="urdu" style="font-size: 1.2rem; color: #efe3cc;">
-            <p style="margin-bottom: 16px;">
-              <strong style="color:var(--gold-bright);">"اوراقِ روح" (گلدستہ نمبر ۱)</strong> روحانیت، خود شناسی، تزکیۂ نفس اور معرفتِ الٰہی کے موضوعات پر مشتمل ایک فکر انگیز ادبی و روحانی تصنیف ہے۔
-            </p>
-            <p style="margin-bottom: 16px;">
-              یہ کتاب انسان کو ظاہری دنیا کی ہنگامہ آرائی سے نکال کر اپنے باطن کے خاموش سفر کی طرف متوجہ کرتی ہے—جہاں سوال خاموش ہوتے ہیں اور رب پر یقین کا نور اترتا ہے۔
-            </p>
-            <div style="background: rgba(0,0,0,0.35); padding: 18px; border-radius: 14px; border-right: 4px solid var(--gold); margin-top: 20px;" dir="ltr">
-              <p><strong>Book Title:</strong> Auraq-e-Rooh (اوراقِ روح — گلدستہ نمبر ۱)</p>
-              <p><strong>Author:</strong> Mian Muzammil Ahmad (میاں مزمل احمد)</p>
-              <p><strong>Publisher:</strong> MMA Pixel Forge Studio (MPFS)</p>
-              <p style="font-size:0.88rem; color:var(--text-muted); margin-top:8px;">All rights reserved. Unauthorized reproduction or distribution is prohibited.</p>
+          <div class="taaruf-details urdu">
+            <p><strong>نامِ کتاب:</strong> اوراقِ روح (گلدستہ نمبر ۱)</p>
+            <p><strong>تحریر و تصنیف:</strong> میاں مزمل احمد (Mian Muzammil Ahmad)</p>
+            <p><strong>ناشر:</strong> MMA Pixel Forge Studio (MPFS)</p>
+            <p><strong>موضوع:</strong> تصوف، تزکیۂ نفس، معرفتِ الٰہی، اور روحانی بیداری</p>
+            <p><strong>تفصیل:</strong> "اوراقِ روح" انسان کے اندرونی سفر، نفس کی پہچان، دنیا کی بے ثباتی، اور اپنے رب کی طرف لوٹنے کی تڑپ کو نہایت سادہ مگر دل میں اتر جانے والے انداز میں بیان کرتی ہے۔ اس کتاب کے مضامین قاری کو خود احتسابی، صبر، شکر، اور حقیقی سکون کی راہ دکھاتے ہیں۔</p>
+            <button class="tab-btn urdu" style="margin-top: 10px;" onclick="switchView('view-read')">📖 کتاب کا مطالعہ شروع کریں</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE 3: FEHRIST-E-MAZAMEEN (HORIZONTAL NUMBERED BOXES) -->
+    <section id="view-fehrist" class="page-view">
+      <div class="section-card">
+        <h2 class="section-heading urdu-heading">فہرستِ مضامین</h2>
+        <div class="horizontal-list urdu">
+          <div class="horizontal-row fehrist-row" onclick="openBookAtPage(5)">
+            <div class="row-main">
+              <div class="num-badge">۱</div>
+              <div class="row-title urdu-heading">رازِ ہستی</div>
             </div>
+            <span class="page-badge">صفحہ ۴</span>
+          </div>
+
+          <div class="horizontal-row fehrist-row" onclick="openBookAtPage(12)">
+            <div class="row-main">
+              <div class="num-badge">۲</div>
+              <div class="row-title urdu-heading">میں نہیں جانتا</div>
+            </div>
+            <span class="page-badge">صفحہ ۱۱</span>
+          </div>
+
+          <div class="horizontal-row fehrist-row" onclick="openBookAtPage(16)">
+            <div class="row-main">
+              <div class="num-badge">۳</div>
+              <div class="row-title urdu-heading">آئینۂ نفس</div>
+            </div>
+            <span class="page-badge">صفحہ ۱۵</span>
+          </div>
+
+          <div class="horizontal-row fehrist-row" onclick="openBookAtPage(21)">
+            <div class="row-main">
+              <div class="num-badge">۴</div>
+              <div class="row-title urdu-heading">درویشی، میری دیوانگی</div>
+            </div>
+            <span class="page-badge">صفحہ ۲۰</span>
+          </div>
+
+          <div class="horizontal-row fehrist-row" onclick="openBookAtPage(25)">
+            <div class="row-main">
+              <div class="num-badge">۵</div>
+              <div class="row-title urdu-heading">خواہشِ نجات</div>
+            </div>
+            <span class="page-badge">صفحہ ۲۴</span>
+          </div>
+
+          <div class="horizontal-row fehrist-row" onclick="openBookAtPage(30)">
+            <div class="row-main">
+              <div class="num-badge">۶</div>
+              <div class="row-title urdu-heading">جب دل نے چھوڑ دیا</div>
+            </div>
+            <span class="page-badge">صفحہ ۲۹</span>
+          </div>
+
+          <div class="horizontal-row fehrist-row" onclick="openBookAtPage(34)">
+            <div class="row-main">
+              <div class="num-badge">۷</div>
+              <div class="row-title urdu-heading">صُمٌّ بُكْمٌ عُمْيٌ</div>
+            </div>
+            <span class="page-badge">صفحہ ۳۳</span>
+          </div>
+
+          <div class="horizontal-row fehrist-row" onclick="openBookAtPage(38)">
+            <div class="row-main">
+              <div class="num-badge">۸</div>
+              <div class="row-title urdu-heading">جب پردہ اٹھے گا</div>
+            </div>
+            <span class="page-badge">صفحہ ۳۷</span>
+          </div>
+
+          <div class="horizontal-row fehrist-row" onclick="openBookAtPage(49)">
+            <div class="row-main">
+              <div class="num-badge">۹</div>
+              <div class="row-title urdu-heading">امیدِ توبہ باقی ہے</div>
+            </div>
+            <span class="page-badge">صفحہ ۴۸</span>
+          </div>
+
+          <div class="horizontal-row fehrist-row" onclick="openBookAtPage(56)">
+            <div class="row-main">
+              <div class="num-badge">۱۰</div>
+              <div class="row-title urdu-heading">قربتِ عشقِ خداوندی</div>
+            </div>
+            <span class="page-badge">صفحہ ۵۵</span>
           </div>
         </div>
       </div>
     </section>
 
-    <!-- VIEW 3: FEHRIST-E-MAZAMEEN (COMPLETE TABLE OF CONTENTS) -->
-    <section id="view-index" class="page-view">
+    <!-- PAGE 4: INWAANAT (HORIZONTAL NUMBERED BOXES) -->
+    <section id="view-inwaanat" class="page-view">
       <div class="section-card">
-        <div class="section-header">
-          <h2 class="urdu-title">فہرستِ مضامین</h2>
-          <p class="urdu">کسی بھی باب پر کلک کر کے براہِ راست اسی صفحے کا مطالعہ کریں</p>
+        <h2 class="section-heading urdu-heading">کتاب کے اہم عنوانات اور ان کا پیغام</h2>
+        <div class="horizontal-list urdu">
+          <div class="horizontal-row inwaanat-row">
+            <div class="row-main">
+              <div class="num-badge">۰۱</div>
+              <div>
+                <div class="row-title urdu-heading">رازِ ہستی</div>
+                <div class="row-desc">انسان اس دنیا میں مالک نہیں بلکہ ایک مسافر ہے؛ اصل منزل دنیا کی آسائشیں نہیں بلکہ اپنے خالق کی پہچان ہے۔</div>
+              </div>
+            </div>
+            <button class="tab-btn urdu" onclick="openBookAtPage(5)">مطالعہ کریں</button>
+          </div>
+
+          <div class="horizontal-row inwaanat-row">
+            <div class="row-main">
+              <div class="num-badge">۰۲</div>
+              <div>
+                <div class="row-title urdu-heading">میں نہیں جانتا</div>
+                <div class="row-desc">اپنے علم کی محدودیت کا اعتراف کرنا اور مستقبل کے تمام خوف اللہ کے سپرد کر دینا ہی حقیقی یقین کی پہلی سیڑھی ہے۔</div>
+              </div>
+            </div>
+            <button class="tab-btn urdu" onclick="openBookAtPage(12)">مطالعہ کریں</button>
+          </div>
+
+          <div class="horizontal-row inwaanat-row">
+            <div class="row-main">
+              <div class="num-badge">۰۳</div>
+              <div>
+                <div class="row-title urdu-heading">آئینۂ نفس</div>
+                <div class="row-desc">دوسروں کے عیب تلاش کرنے کے بجائے اپنے باطن کے آئینے کو غرور، حسد اور انا کی دھول سے صاف کرنا۔</div>
+              </div>
+            </div>
+            <button class="tab-btn urdu" onclick="openBookAtPage(16)">مطالعہ کریں</button>
+          </div>
+
+          <div class="horizontal-row inwaanat-row">
+            <div class="row-main">
+              <div class="num-badge">۰۴</div>
+              <div>
+                <div class="row-title urdu-heading">درویشی، میری دیوانگی</div>
+                <div class="row-desc">درویشی کسی خاص لباس کا نام نہیں بلکہ دل سے دنیا کی غلامی نکال کر صرف رب کی رضا کا طلبگار بن جانا ہے۔</div>
+              </div>
+            </div>
+            <button class="tab-btn urdu" onclick="openBookAtPage(21)">مطالعہ کریں</button>
+          </div>
+
+          <div class="horizontal-row inwaanat-row">
+            <div class="row-main">
+              <div class="num-badge">۰۵</div>
+              <div>
+                <div class="row-title urdu-heading">خواہشِ نجات</div>
+                <div class="row-desc">نفس، انا اور دنیاوی زنجیروں سے آزادی کا راستہ صرف اللہ کے ذکر اور اس کے دروازے پر عاجزی سے جھکنے میں ہے۔</div>
+              </div>
+            </div>
+            <button class="tab-btn urdu" onclick="openBookAtPage(25)">مطالعہ کریں</button>
+          </div>
+
+          <div class="horizontal-row inwaanat-row">
+            <div class="row-main">
+              <div class="num-badge">۰۶</div>
+              <div>
+                <div class="row-title urdu-heading">جب دل نے چھوڑ دیا</div>
+                <div class="row-desc">اپنی ضد اور مرضی کو اللہ کی حکمت کے سامنے سپرد کر دینے سے دل کو وہ اطمینان ملتا ہے جو ہر شکوے کو مٹا دیتا ہے۔</div>
+              </div>
+            </div>
+            <button class="tab-btn urdu" onclick="openBookAtPage(30)">مطالعہ کریں</button>
+          </div>
+
+          <div class="horizontal-row inwaanat-row">
+            <div class="row-main">
+              <div class="num-badge">۰۷</div>
+              <div>
+                <div class="row-title urdu-heading">صُمٌّ بُكْمٌ عُمْيٌ</div>
+                <div class="row-desc">حق کو سننے، دیکھنے اور قبول کرنے سے بار بار منہ موڑنے کے روحانی نقصانات اور دل پر پردہ پڑ جانے کی تنبیہ۔</div>
+              </div>
+            </div>
+            <button class="tab-btn urdu" onclick="openBookAtPage(34)">مطالعہ کریں</button>
+          </div>
+
+          <div class="horizontal-row inwaanat-row">
+            <div class="row-main">
+              <div class="num-badge">۰۸</div>
+              <div>
+                <div class="row-title urdu-heading">جب پردہ اٹھے گا</div>
+                <div class="row-desc">آخرت کی حقیقت اور وہ لمحہ جب دنیا کے تمام پردے ہٹ جائیں گے اور انسان اپنے ہر چھوٹے بڑے عمل کو سامنے پائے گا۔</div>
+              </div>
+            </div>
+            <button class="tab-btn urdu" onclick="openBookAtPage(38)">مطالعہ کریں</button>
+          </div>
+
+          <div class="horizontal-row inwaanat-row">
+            <div class="row-main">
+              <div class="num-badge">۰۹</div>
+              <div>
+                <div class="row-title urdu-heading">امیدِ توبہ باقی ہے</div>
+                <div class="row-desc">جب تک سانس چل رہی ہے اللہ کی رحمت کا دروازہ کھلا ہے؛ مایوسی چھوڑ کر سچے دل سے پلٹنے کی دعوت۔</div>
+              </div>
+            </div>
+            <button class="tab-btn urdu" onclick="openBookAtPage(49)">مطالعہ کریں</button>
+          </div>
+
+          <div class="horizontal-row inwaanat-row">
+            <div class="row-main">
+              <div class="num-badge">۱۰</div>
+              <div>
+                <div class="row-title urdu-heading">قربتِ عشقِ خداوندی</div>
+                <div class="row-desc">روحانی سفر کی انتہا یعنی اللہ کی محبت اور قربت، جہاں دل ہر غیر سے بے نیاز ہو کر صرف اپنے محبوبِ حقیقی کا ہو جاتا ہے۔</div>
+              </div>
+            </div>
+            <button class="tab-btn urdu" onclick="openBookAtPage(56)">مطالعہ کریں</button>
+          </div>
         </div>
-        <div class="index-grid urdu" id="full-index-grid"></div>
       </div>
     </section>
 
-    <!-- VIEW 4: COMPLETE INWA'ANAT (ALL 10 CHAPTERS WITH SUMMARIES & AUDIO) -->
-    <section id="view-topics" class="page-view">
-      <div class="section-card">
-        <div class="section-header">
-          <h2 class="urdu-title">مکمل عنواناتِ کتاب</h2>
-          <p class="urdu">گلدستہ نمبر ۱ کے تمام دس روحانی ابواب کا تعارف اور براہِ راست مطالعہ</p>
-        </div>
-        <div class="topics-grid urdu" id="complete-topics-grid"></div>
-      </div>
-    </section>
-
-    <!-- VIEW 5: DOWNLOAD & ORIGINAL URL SHARE -->
+    <!-- PAGE 5: DOWNLOAD & SHARE -->
     <section id="view-download" class="page-view">
-      <div class="section-card">
-        <div class="section-header">
-          <h2 class="urdu-title">ڈاؤن لوڈ اور شیئرنگ</h2>
-          <p class="urdu">کتاب کی مکمل پی ڈی ایف محفوظ کریں یا اصل لنک دوسروں کے ساتھ بانٹیں</p>
-        </div>
-        <div class="share-box">
-          <a class="tab-btn active urdu" style="font-size:1.15rem; padding: 12px 30px;" href="auraq-erooh.pdf" download="Auraq-e-Rooh-Volume-1.pdf">
-            ⬇ مکمل کتاب ڈاؤن لوڈ کریں (Download PDF)
-          </a>
+      <div class="section-card share-box">
+        <h2 class="section-heading urdu-heading" style="width: 100%;">ڈاؤن لوڈ اور شیئرنگ</h2>
+        <p class="urdu" style="font-size: 1.2rem; max-width: 650px;">
+          آپ اس کتاب کی مکمل PDF فائل اپنے موبائل یا کمپیوٹر میں محفوظ کر سکتے ہیں، یا نیچے دیے گئے اصل لنک کے ذریعے دوستوں کے ساتھ شیئر کر سکتے ہیں۔
+        </p>
 
-          <div style="width:100%; margin-top:10px;">
-            <p class="urdu" style="margin-bottom:8px; color:var(--gold);">کتاب کا مستقل ویب لنک (Original URL):</p>
-            <div class="url-copy-bar">
-              <input type="text" id="original-url-input" readonly />
-              <button class="tab-btn active" style="border-radius:0;" onclick="copyOriginalUrl()">Copy Link</button>
-            </div>
-          </div>
+        <a class="tab-btn urdu" style="padding: 12px 30px; font-size: 1.15rem; text-decoration: none;" href="auraq-erooh.pdf" download="Auraq-e-Rooh.pdf">
+          ⬇ مکمل کتاب ڈاؤن لوڈ کریں (Download PDF)
+        </a>
 
-          <button class="tab-btn urdu" onclick="nativeShare()">🔗 سوشل میڈیا یا واٹس ایپ پر شیئر کریں</button>
+        <div style="margin-top: 15px; width: 100%; display: flex; flex-direction: column; align-items: center; gap: 12px;">
+          <span class="urdu" style="color: var(--gold);">کتاب کا مستقل لنک (Original URL):</span>
+          <div class="url-display" id="original-url-text" dir="ltr"></div>
+          <button class="tab-btn urdu" onclick="shareBook()">🔗 لنک کاپی / شیئر کریں (Share Link)</button>
         </div>
       </div>
     </section>
 
-    <!-- VIEW 6: DEDICATED COMMENTS PAGE -->
+    <!-- PAGE 6: COMMENTS PAGE -->
     <section id="view-comments" class="page-view">
       <div class="section-card">
-        <div class="section-header">
-          <h2 class="urdu-title">قارئین کی آراء و تبصرے</h2>
-          <p class="urdu">"اوراقِ روح" کے مطالعے کے بعد اپنے احساسات اور تاثرات قلمبند کریں</p>
-        </div>
-
+        <h2 class="section-heading urdu-heading">قارئین کی آراء اور تبصرے</h2>
         <form class="comment-form" onsubmit="addComment(event)">
-          <input type="text" id="reader-name" class="urdu" placeholder="آپ کا اسمِ گرامی..." required />
-          <textarea id="reader-comment" class="urdu" rows="4" placeholder="کتاب کے بارے میں اپنی قیمتی رائے یہاں تحریر کریں..." required></textarea>
-          <button type="submit" class="tab-btn active urdu" style="align-self: flex-start; padding: 10px 26px;">
-            ✍ تبصرہ شائع کریں
-          </button>
+          <input type="text" id="reader-name" class="urdu" placeholder="آپ کا اسمِ گرامی (Your Name)" required />
+          <textarea id="reader-comment" class="urdu" rows="4" placeholder="کتاب کے مطالعے کے بعد اپنے تاثرات اور رائے یہاں تحریر کریں..." required></textarea>
+          <button type="submit" class="tab-btn urdu" style="align-self: flex-start; padding: 10px 26px;">تبصرہ شائع کریں</button>
         </form>
-
-        <div class="comment-list" id="comments-list"></div>
+        <div id="comments-list"></div>
       </div>
     </section>
   </div>
 
-  <div id="toast">پیغام</div>
+  <div id="toast">Link Copied!</div>
 
   <script>
     const PDF_URL = 'auraq-erooh.pdf';
-    let pdfDoc = null;
     let pageFlip = null;
     let totalPdfPages = 0;
-    let currentUrduPage = 1;
-    let lampState = false;
-    let isSpeaking = false;
+    let isLampOn = false;
 
-    // Complete Chapters Data (All 10 Chapters + Front Matter)
-    const BOOK_CHAPTERS = [
-      {
-        num: "ابتدائیہ",
-        title: "سرورق و فہرستِ مضامین",
-        bookPage: "1 - 3",
-        pdfPage: 1,
-        summary: "کتاب کا سرورق، حقوقِ اشاعت (MMA Pixel Forge Studio) اور مکمل فہرستِ مضامین۔"
-      },
-      {
-        num: "باب اول",
-        title: "رازِ ہستی",
-        bookPage: "4",
-        pdfPage: 5,
-        summary: "انسان کی اس دنیا میں آمد کا مقصد، زندگی کے عارضی سفر کی حقیقت اور باہر کی دنیا کے بجائے اپنے اندر کے سفر کی پہچان۔"
-      },
-      {
-        num: "باب دوم",
-        title: "میں نہیں جانتا",
-        bookPage: "11",
-        pdfPage: 12,
-        summary: "انسانی علم اور نظر کی محدودیت کا اعتراف، اور ہر بے یقینی کو اس رب کے سپرد کر دینا جو ہر راستے کا انجام جانتا ہے۔"
-      },
-      {
-        num: "باب سوم",
-        title: "آئینۂ نفس",
-        bookPage: "15",
-        pdfPage: 16,
-        summary: "دوسروں کے عیب تلاش کرنے کے بجائے اپنے باطن کے آئینے کو غرور، حسد اور خواہشات کی دھول سے صاف کرنے کا درس۔"
-      },
-      {
-        num: "باب چہارم",
-        title: "درویشی، میری دیوانگی",
-        bookPage: "20",
-        pdfPage: 21,
-        summary: "حقیقی درویشی کی تعریف—جو کسی خاص لباس کا نہیں بلکہ دنیا میں رہتے ہوئے دل کو دنیا کی غلامی سے آزاد رکھنے کا نام ہے۔"
-      },
-      {
-        num: "باب پنجم",
-        title: "خواہشِ نجات",
-        bookPage: "24",
-        pdfPage: 25,
-        summary: "نفس، انا اور دنیاوی بوجھ کی قید سے رہائی کی پکار اور اللہ کے ذکر میں دل کے حقیقی اطمینان کی تلاش۔"
-      },
-      {
-        num: "باب ششم",
-        title: "جب دل نے چھوڑ دیا",
-        bookPage: "29",
-        pdfPage: 30,
-        summary: "ہر معاملے کو اپنی مرضی سے چلانے کی ضد چھوڑ کر اللہ کی رضا کے سامنے سپردگی اختیار کرنے کا روحانی سکون۔"
-      },
-      {
-        num: "باب ہفتم",
-        title: "صُمٌّ بُكْمٌ عُمْيٌ (گونگے، بہرے، اندھے)",
-        bookPage: "33",
-        pdfPage: 34,
-        summary: "قرآنی آیات کی روشنی میں حق سے روحانی محرومی کی تنبیہ اور مہلت ختم ہونے سے پہلے رب کی طرف پلٹنے کی دعوت۔"
-      },
-      {
-        num: "باب ہشتم",
-        title: "جب پردہ اٹھے گا",
-        bookPage: "37",
-        pdfPage: 38,
-        summary: "اس دن کا تصور جب غفلت کے تمام پردے ہٹا دیے جائیں گے اور انسان اپنے ہر چھوٹے بڑے عمل کو اپنے سامنے موجود پائے گا۔"
-      },
-      {
-        num: "باب نہم",
-        title: "امیدِ توبہ باقی ہے",
-        bookPage: "48",
-        pdfPage: 49,
-        summary: "مایوسی کے اندھیروں میں رحمتِ الٰہی کی کرن—جب تک سانس باقی ہے، رب کی بارگاہ میں واپسی اور توبہ کا دروازہ کھلا ہے۔"
-      },
-      {
-        num: "باب دہم",
-        title: "قربتِ عشقِ خداوندی",
-        bookPage: "55",
-        pdfPage: 56,
-        summary: "محبتِ حقیقی کی معراج اور بندے کا اپنے خالق کے قرب میں پہنچ کر تمام دنیاوی غموں سے بے نیاز ہو جانا۔"
-      }
-    ];
-
-    // Soft, Authentic Paper Page-Turn Sound (Filtered Pink/Brown Noise Rustle - No harsh clicks)
-    function playSoftPageSound() {
+    function playSoftPaperSound() {
       try {
-        const AudioCtx = window.AudioContext || window.webkitAudioContext;
-        const ctx = new AudioCtx();
-        const duration = 0.38;
-        const sampleRate = ctx.sampleRate;
-        const length = Math.floor(sampleRate * duration);
-        const buffer = ctx.createBuffer(1, length, sampleRate);
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const duration = 0.24;
+        const bufferSize = Math.floor(ctx.sampleRate * duration);
+        const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
         const data = buffer.getChannelData(0);
 
         let b0 = 0, b1 = 0, b2 = 0;
-        for (let i = 0; i < length; i++) {
+        for (let i = 0; i < bufferSize; i++) {
           const white = Math.random() * 2 - 1;
           b0 = 0.997 * b0 + white * 0.029;
           b1 = 0.985 * b1 + white * 0.032;
           b2 = 0.950 * b2 + white * 0.048;
-          const pink = (b0 + b1 + b2) * 0.5;
-
-          const t = i / length;
-          const envelope = Math.sin(Math.PI * Math.pow(t, 0.7)) * Math.exp(-t * 1.4);
-          data[i] = pink * envelope;
+          const env = Math.sin((i / bufferSize) * Math.PI);
+          data[i] = (b0 + b1 + b2) * env * 0.65;
         }
 
         const source = ctx.createBufferSource();
         source.buffer = buffer;
 
-        const lowpass = ctx.createBiquadFilter();
-        lowpass.type = 'lowpass';
-        lowpass.frequency.setValueAtTime(1100, ctx.currentTime);
-        lowpass.frequency.linearRampToValueAtTime(650, ctx.currentTime + duration);
+        const filter = ctx.createBiquadFilter();
+        filter.type = 'lowpass';
+        filter.frequency.setValueAtTime(1100, ctx.currentTime);
 
         const gain = ctx.createGain();
-        gain.gain.setValueAtTime(0.45, ctx.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.005, ctx.currentTime + duration);
+        gain.gain.setValueAtTime(0.4, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.01, ctx.currentTime + duration);
 
-        source.connect(lowpass);
-        lowpass.connect(gain);
+        source.connect(filter);
+        filter.connect(gain);
         gain.connect(ctx.destination);
         source.start();
       } catch (e) {}
     }
 
-    // Strict Sequence: 5s Loader -> Direct 3s Smoky Title Page -> Smoky Dissolve -> Centered Book
-    window.addEventListener('DOMContentLoaded', () => {
-      renderChaptersAndTopics();
-      loadComments();
-      document.getElementById('original-url-input').value = window.location.origin + window.location.pathname;
-      initPDFBook();
+    function toggleLamp() {
+      isLampOn = !isLampOn;
+      const fixture = document.getElementById('lamp-fixture');
+      const flipbook = document.getElementById('flipbook');
+      const btn = document.getElementById('lamp-btn');
 
-      // Step 1: 5 Seconds Loader
+      if (isLampOn) {
+        fixture.style.display = 'flex';
+        flipbook.classList.add('lamp-illuminated');
+        btn.classList.add('lamp-on');
+        btn.innerText = '🪔 چراغ: ON';
+      } else {
+        fixture.style.display = 'none';
+        flipbook.classList.remove('lamp-illuminated');
+        btn.classList.remove('lamp-on');
+        btn.innerText = '🪔 چراغ: OFF';
+      }
+    }
+
+    function switchView(viewId) {
+      document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active-view'));
+      document.querySelectorAll('.nav-tabs .tab-btn').forEach(b => b.classList.remove('active'));
+
+      document.getElementById(viewId).classList.add('active-view');
+      const activeBtn = document.querySelector(`.nav-tabs .tab-btn[data-target="${viewId}"]`);
+      if (activeBtn) activeBtn.classList.add('active');
+
+      if (viewId === 'view-read' && pageFlip) {
+        setTimeout(() => pageFlip.update(), 100);
+      }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function openBookAtPage(pdfPageNumber) {
+      switchView('view-read');
+      if (pageFlip && pdfPageNumber <= totalPdfPages) {
+        setTimeout(() => {
+          pageFlip.flip(totalPdfPages - pdfPageNumber);
+        }, 150);
+      }
+    }
+
+    window.addEventListener('DOMContentLoaded', () => {
+      const originalUrl = window.location.origin + window.location.pathname;
+      document.getElementById('original-url-text').innerText = originalUrl;
+
+      initPDFBook();
+      loadComments();
+
       setTimeout(() => {
         const loader = document.getElementById('loader-screen');
         const splash = document.getElementById('splash-screen');
 
-        // Show Splash underneath BEFORE fading loader so Read Page NEVER flashes in between
         splash.style.display = 'flex';
         loader.style.opacity = '0';
 
         setTimeout(() => {
           loader.style.display = 'none';
 
-          // Step 2: Keep Smoky Title Page for 3 Seconds, then Smoky Dissolve into Book
           setTimeout(() => {
             document.getElementById('app-container').style.display = 'flex';
             if (pageFlip) pageFlip.update();
-            splash.classList.add('smoky-dissolve');
+            splash.classList.add('smoky-exit');
 
             setTimeout(() => {
               splash.style.display = 'none';
             }, 1800);
           }, 3000);
-        }, 550);
+        }, 650);
       }, 5000);
     });
 
     async function initPDFBook() {
       try {
         pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.worker.min.js';
-        pdfDoc = await pdfjsLib.getDocument(PDF_URL).promise;
-        totalPdfPages = pdfDoc.numPages;
+        const pdf = await pdfjsLib.getDocument(PDF_URL).promise;
+        totalPdfPages = pdf.numPages;
 
         const flipbookEl = document.getElementById('flipbook');
         const isMobile = window.innerWidth < 768;
-        const pageWidth = isMobile ? Math.min(window.innerWidth - 36, 350) : 430;
+        const pageWidth = isMobile ? Math.min(window.innerWidth - 36, 360) : 440;
         const pageHeight = Math.round(pageWidth * 1.414);
 
-        // Cover thumbnail for About Page
-        const firstPage = await pdfDoc.getPage(1);
-        const coverViewport = firstPage.getViewport({ scale: 1.1 });
+        const firstPage = await pdf.getPage(1);
+        const coverViewport = firstPage.getViewport({ scale: 1.4 });
         const coverCanvas = document.createElement('canvas');
         coverCanvas.width = coverViewport.width;
         coverCanvas.height = coverViewport.height;
         await firstPage.render({ canvasContext: coverCanvas.getContext('2d'), viewport: coverViewport }).promise;
-        document.getElementById('about-cover-img').src = coverCanvas.toDataURL('image/jpeg', 0.88);
+        const coverDataUrl = coverCanvas.toDataURL('image/jpeg', 0.9);
 
-        // Build Right-to-Left Sheets (Cover single, inner double, end single)
+        document.getElementById('splash-sufi-bg').style.backgroundImage = `url('${coverDataUrl}')`;
+        document.getElementById('taaruf-cover-img').src = coverDataUrl;
+
         const pageElements = [];
         for (let i = totalPdfPages; i >= 1; i--) {
           const sheet = document.createElement('div');
           sheet.className = 'page-sheet';
+          sheet.dataset.pdfPage = i;
           if (i === 1 || i === totalPdfPages) {
             sheet.dataset.density = 'hard';
           }
@@ -1155,7 +1144,7 @@
           showCover: true,
           usePortrait: isMobile,
           flippingTime: 850,
-          maxShadowOpacity: 0.55,
+          maxShadowOpacity: 0.6,
           mobileScrollSupport: false
         });
 
@@ -1166,14 +1155,13 @@
         updateIndicator(1);
 
         pageFlip.on('flip', (e) => {
-          playSoftPageSound();
-          stopAudioReading();
-          currentUrduPage = totalPdfPages - e.data;
-          updateIndicator(currentUrduPage);
+          playSoftPaperSound();
+          const actualUrduPage = totalPdfPages - e.data;
+          updateIndicator(actualUrduPage);
         });
 
         for (const item of pageElements.reverse()) {
-          const page = await pdfDoc.getPage(item.pdfPageNum);
+          const page = await pdf.getPage(item.pdfPageNum);
           const viewport = page.getViewport({ scale: 1.5 });
           item.canvas.width = viewport.width;
           item.canvas.height = viewport.height;
@@ -1182,191 +1170,28 @@
 
         document.getElementById('book-status').style.display = 'none';
       } catch (err) {
-        document.getElementById('book-status').innerText = 'کتاب لوڈ کرنے میں مسئلہ: ' + err.message;
+        document.getElementById('book-status').innerText = 'کتاب لوڈ کرنے میں مسئلہ پیش آیا: ' + err.message;
       }
     }
 
     function updateIndicator(pageNum) {
-      currentUrduPage = pageNum;
       document.getElementById('page-indicator').innerText = `Page ${pageNum} of ${totalPdfPages}`;
     }
 
     function flipNext() { if (pageFlip) pageFlip.flipPrev(); }
     function flipPrev() { if (pageFlip) pageFlip.flipNext(); }
 
-    function openBookAtPage(pdfPageNumber) {
-      switchView('read');
-      setTimeout(() => {
-        if (pageFlip && pdfPageNumber >= 1 && pdfPageNumber <= totalPdfPages) {
-          pageFlip.flip(totalPdfPages - pdfPageNumber);
-        }
-      }, 150);
-    }
-
-    // Dedicated Page Navigation
-    function switchView(viewName) {
-      document.querySelectorAll('.page-view').forEach(v => v.classList.remove('active-view'));
-      document.querySelectorAll('.nav-tabs .tab-btn').forEach(b => b.classList.remove('active'));
-
-      const targetView = document.getElementById('view-' + viewName);
-      const targetTab = document.getElementById('tab-' + viewName);
-      if (targetView) targetView.classList.add('active-view');
-      if (targetTab) targetTab.classList.add('active');
-
-      if (viewName === 'read' && pageFlip) {
-        setTimeout(() => pageFlip.update(), 100);
-      }
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    }
-
-    // Bright Reading Lamp Controller
-    function toggleLamp() {
-      lampState = !lampState;
-      const lampEl = document.getElementById('lamp-assembly');
-      const stageEl = document.getElementById('book-stage');
-      const btn = document.getElementById('lamp-btn');
-
-      if (lampState) {
-        if (!document.getElementById('view-read').classList.contains('active-view')) {
-          switchView('read');
-        }
-        lampEl.classList.add('is-lit');
-        stageEl.classList.add('illuminated');
-        btn.classList.add('lamp-on');
-        btn.innerText = '🪔 چراغ: ON';
-      } else {
-        lampEl.classList.remove('is-lit');
-        stageEl.classList.remove('illuminated');
-        btn.classList.remove('lamp-on');
-        btn.innerText = '🪔 چراغ: OFF';
-      }
-    }
-
-    // Browser Audio Book Reader (Text-to-Speech from PDF Page)
-    async function toggleAudioReading() {
-      if (!('speechSynthesis' in window)) {
-        showToast('آپ کا براؤزر آڈیو ریڈنگ سپورٹ نہیں کرتا۔');
-        return;
-      }
-
-      if (isSpeaking) {
-        stopAudioReading();
-        return;
-      }
-
-      if (!pdfDoc) return;
-
-      const statusText = document.getElementById('audio-status-text');
-      const playBtn = document.getElementById('btn-audio-play');
-      const wave = document.getElementById('audio-wave');
-
-      statusText.innerText = `Extracting text from Page ${currentUrduPage}...`;
-
-      try {
-        const page = await pdfDoc.getPage(currentUrduPage);
-        const textContent = await page.getTextContent();
-        const pageText = textContent.items.map(item => item.str).join(' ').trim();
-
-        if (!pageText || pageText.length < 5) {
-          statusText.innerText = `Page ${currentUrduPage} is an image/title page.`;
-          showToast('اس صفحے پر پڑھنے کے لیے متن موجود نہیں، اگلے صفحے پر جائیں۔');
-          return;
-        }
-
-        window.speechSynthesis.cancel();
-        const utterance = new SpeechSynthesisUtterance(pageText);
-        const voices = window.speechSynthesis.getVoices();
-        const urduVoice = voices.find(v => v.lang.includes('ur')) || voices.find(v => v.lang.includes('hi') || v.lang.includes('ar'));
-        if (urduVoice) utterance.voice = urduVoice;
-        utterance.lang = 'ur-PK';
-        utterance.rate = parseFloat(document.getElementById('audio-rate').value || '1');
-
-        utterance.onstart = () => {
-          isSpeaking = true;
-          wave.classList.add('playing');
-          playBtn.innerText = '⏸ توقف (Pause)';
-          statusText.innerText = `Reading Page ${currentUrduPage} aloud...`;
-        };
-
-        utterance.onend = () => {
-          stopAudioReading();
-        };
-
-        utterance.onerror = () => {
-          stopAudioReading();
-          statusText.innerText = 'Audio playback finished or unavailable on this device.';
-        };
-
-        window.speechSynthesis.speak(utterance);
-      } catch (err) {
-        statusText.innerText = 'Error reading page audio.';
-      }
-    }
-
-    function stopAudioReading() {
-      if ('speechSynthesis' in window) {
-        window.speechSynthesis.cancel();
-      }
-      isSpeaking = false;
-      document.getElementById('audio-wave').classList.remove('playing');
-      document.getElementById('btn-audio-play').innerText = '🔊 سنیں (Play)';
-      document.getElementById('audio-status-text').innerText = `Ready to read Page ${currentUrduPage}`;
-    }
-
-    function listenToChapter(pdfPageNum) {
-      openBookAtPage(pdfPageNum);
-      setTimeout(() => {
-        toggleAudioReading();
-      }, 900);
-    }
-
-    // Populate Complete Fehrist & Complete Inwa'anat Pages
-    function renderChaptersAndTopics() {
-      const indexGrid = document.getElementById('full-index-grid');
-      const topicsGrid = document.getElementById('complete-topics-grid');
-
-      indexGrid.innerHTML = BOOK_CHAPTERS.map(ch => `
-        <div class="index-item" onclick="openBookAtPage(${ch.pdfPage})">
-          <div>
-            <span style="color:var(--gold); font-size:0.88rem; margin-left:8px;">(${ch.num})</span>
-            <strong style="font-size:1.15rem;">${ch.title}</strong>
-          </div>
-          <span class="page-badge">صفحہ ${ch.bookPage}</span>
-        </div>
-      `).join('');
-
-      topicsGrid.innerHTML = BOOK_CHAPTERS.map(ch => `
-        <div class="topic-card">
-          <div>
-            <div class="topic-num">${ch.num} • صفحہ ${ch.bookPage}</div>
-            <h3>${ch.title}</h3>
-            <p>${ch.summary}</p>
-          </div>
-          <div class="topic-actions">
-            <button class="tab-btn active urdu" onclick="openBookAtPage(${ch.pdfPage})">📖 مطالعہ کریں</button>
-            <button class="tab-btn urdu" onclick="listenToChapter(${ch.pdfPage})">🔊 آڈیو سنیں</button>
-          </div>
-        </div>
-      `).join('');
-    }
-
-    function copyOriginalUrl() {
-      const input = document.getElementById('original-url-input');
-      input.select();
-      navigator.clipboard.writeText(input.value);
-      showToast('اصل لنک کاپی ہو گیا ہے!');
-    }
-
-    function nativeShare() {
-      const url = window.location.origin + window.location.pathname;
+    function shareBook() {
+      const shareUrl = window.location.origin + window.location.pathname;
       if (navigator.share) {
         navigator.share({
           title: 'اوراقِ روح - Auraq-e-Rooh',
-          text: 'میاں مزمل احمد کی روحانی تصنیف "اوراقِ روح" کا آن لائن مطالعہ کریں',
-          url: url
+          text: 'Read Auraq-e-Rooh by Mian Muzammil Ahmad',
+          url: shareUrl
         });
       } else {
-        copyOriginalUrl();
+        navigator.clipboard.writeText(shareUrl);
+        showToast('اصل لنک کاپی ہو گیا ہے!');
       }
     }
 
@@ -1381,16 +1206,13 @@
       const saved = JSON.parse(localStorage.getItem('auraq_comments') || '[]');
       const list = document.getElementById('comments-list');
       if (saved.length === 0) {
-        list.innerHTML = '<p class="urdu" style="text-align:center; color:var(--text-muted);">ابھی تک کوئی تبصرہ درج نہیں ہوا۔ پہلے قاری بن کر اپنی رائے دیں!</p>';
+        list.innerHTML = '<p class="urdu" style="color:#aaa; font-size:1.1rem;">ابھی تک کوئی تبصرہ شائع نہیں ہوا۔ پہلے قاری بنیں!</p>';
         return;
       }
       list.innerHTML = saved.map(c => `
         <div class="comment-item">
-          <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
-            <strong class="urdu" style="color:var(--gold-bright);">${c.name}</strong>
-            <span style="font-size:0.8rem; color:var(--text-muted);" dir="ltr">${c.date}</span>
-          </div>
-          <p class="urdu" style="color:#f0e4ce;">${c.text}</p>
+          <div class="comment-author urdu">${c.name} <span style="font-size:0.85rem; color:#999; font-weight:normal;" dir="ltr">(${c.date})</span></div>
+          <div class="comment-text urdu">${c.text}</div>
         </div>
       `).join('');
     }
@@ -1408,7 +1230,7 @@
       document.getElementById('reader-name').value = '';
       document.getElementById('reader-comment').value = '';
       loadComments();
-      showToast('آپ کا تبصرہ کامیابی سے شائع ہو گیا ہے!');
+      showToast('آپ کا تبصرہ شائع کر دیا گیا ہے!');
     }
   </script>
 </body>
